@@ -321,20 +321,20 @@ export function useNumberFieldState(
       let _numberParser = new NumberParser(localeCode.locale, formatOptions);
       if (
         (
-          value.includes(localeCode.groupSeparator) ||
-          value.includes(localeCode.decimalSeparator)
+          (localeCode.groupSeparator && value.includes(localeCode.groupSeparator)) ||
+          (localeCode.decimalSeparator && value.includes(localeCode.decimalSeparator))
         ) &&
         value.lastIndexOf(localeCode.groupSeparator) > value.lastIndexOf(localeCode.decimalSeparator)
       ) {
         if (value.lastIndexOf(localeCode.decimalSeparator) === -1) {
-          let pv = _numberParser.parse(value.replaceAll(localeCode.groupSeparator, ''));
-          if (!isNaN(pv) && parseFloat(value.replaceAll(localeCode.groupSeparator, '')) === pv) {
+          let pv = _numberParser.parse(value.replaceAll(localeCode.groupSeparator ?? '', ''));
+          if (!isNaN(pv) && parseFloat(value.replaceAll(localeCode.groupSeparator ?? '', '')) === pv) {
             return pv;
           }
         }
         continue;
       }
-      _parsedValue = _numberParser.parse(value.replaceAll(localeCode.groupSeparator, ''));
+      _parsedValue = _numberParser.parse(value.replaceAll(localeCode.groupSeparator ?? '', ''));
       if (!isNaN(_parsedValue)) {
         return _parsedValue;
       }
