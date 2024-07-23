@@ -275,13 +275,13 @@ class NumberParserImpl {
       // remove any non-ambiguous grouping symbols.
       abs = abs.replace(NON_AMBIGUOUS_GROUPING_SYMBOLS_REGEX, '');
       numeralMatches = abs.match(NUMERALS_REGEX);
-      let firstNumeralMatch = numeralMatches[0];
+      let firstNumeralMatch = numeralMatches?.[0];
       let indexOfFirstNumeral = abs.indexOf(firstNumeralMatch);
       indexOfLastNumeral = abs.length - 1;
 
       let decimalPartMatches = abs.match(DECIMAL_PART_REGEX);
-      let groupSymbolMatch:RegExpMatchArray | Array<string> | null = abs.match(GROUPING_SYMBOLS_REGEX)?.filter((s: string, i: number) => i >= indexOfFirstNumeral - 1);
-      if (decimalPartMatches.groups?.symbol && groupSymbolMatch?.[groupSymbolMatch.length - 1] === decimalPartMatches.groups?.symbol) {
+      let groupSymbolMatch:Array<string> | undefined = abs.match(GROUPING_SYMBOLS_REGEX)?.filter((s: string, i: number) => i >= indexOfFirstNumeral - 1);
+      if (decimalPartMatches?.groups?.symbol && groupSymbolMatch?.[groupSymbolMatch.length - 1] === decimalPartMatches.groups?.symbol) {
         groupSymbolMatch = groupSymbolMatch.slice(0, -1);
         if (groupSymbolMatch.length === 0) {
           groupSymbolMatch = null;
@@ -291,7 +291,7 @@ class NumberParserImpl {
         decimalPartMatches = abs.match(DECIMAL_PART_REGEX);
       }
 
-      let decimalPart: string | undefined = decimalPartMatches[0];
+      let decimalPart: string | undefined = decimalPartMatches?.[0];
       let integerPart: string | undefined = decimalPart !== '' ? abs.slice(0, abs.lastIndexOf(decimalPart)) : abs;
       let beforeAbs: string = '';
       if (decimalPart && indexOfFirstNumeral > integerPart.length - 1) {
@@ -304,15 +304,15 @@ class NumberParserImpl {
 
       integerPart = integerPart.replace(GROUPING_SYMBOLS_REGEX, '');
 
-      if (decimalPartMatches.groups?.symbol !== (this.symbols.decimal ?? '.') &&
+      if (decimalPartMatches?.groups?.symbol !== (this.symbols.decimal ?? '.') &&
         (
-          decimalPartMatches.groups?.digits?.length < 3 ||
-          decimalPartMatches.groups?.digits?.length > 3 ||
+          decimalPartMatches?.groups?.digits?.length < 3 ||
+          decimalPartMatches?.groups?.digits?.length > 3 ||
           integerPart.length > 3 ||
           (integerPart === '0' || integerPart === '\u0660' || integerPart === '\u3007')
         )
       ) {
-        decimalPart = decimalPart.replace(decimalPartMatches.groups.symbol, this.symbols.decimal ?? '.');
+        decimalPart = decimalPart.replace(decimalPartMatches?.groups?.symbol, this.symbols.decimal ?? '.');
       }
 
       integerPart.replace(LEADING_ZERO_REGEX, '');
