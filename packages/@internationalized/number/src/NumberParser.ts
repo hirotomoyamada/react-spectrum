@@ -275,7 +275,7 @@ class NumberParserImpl {
       // remove any non-ambiguous grouping symbols.
       abs = abs.replace(NON_AMBIGUOUS_GROUPING_SYMBOLS_REGEX, '');
       numeralMatches = abs.match(NUMERALS_REGEX);
-      let firstNumeralMatch = numeralMatches?.[0];
+      let firstNumeralMatch = numeralMatches?.[0] ?? '';
       let indexOfFirstNumeral = abs.indexOf(firstNumeralMatch);
       indexOfLastNumeral = abs.length - 1;
 
@@ -284,7 +284,7 @@ class NumberParserImpl {
       if (decimalPartMatches?.groups?.symbol && groupSymbolMatch?.[groupSymbolMatch.length - 1] === decimalPartMatches.groups?.symbol) {
         groupSymbolMatch = groupSymbolMatch.slice(0, -1);
         if (groupSymbolMatch.length === 0) {
-          groupSymbolMatch = null;
+          groupSymbolMatch = undefined;
         } else {
           abs = replaceAll(abs, groupSymbolMatch[0], '');
         }
@@ -292,7 +292,7 @@ class NumberParserImpl {
       }
 
       let decimalPart: string | undefined = decimalPartMatches?.[0];
-      let integerPart: string | undefined = decimalPart !== '' ? abs.slice(0, abs.lastIndexOf(decimalPart)) : abs;
+      let integerPart: string | undefined = decimalPart && decimalPart !== '' ? abs.slice(0, abs.lastIndexOf(decimalPart)) : abs;
       let beforeAbs: string = '';
       if (decimalPart && indexOfFirstNumeral > integerPart.length - 1) {
         beforeAbs = integerPart;
@@ -304,7 +304,9 @@ class NumberParserImpl {
 
       integerPart = integerPart.replace(GROUPING_SYMBOLS_REGEX, '');
 
-      if (decimalPartMatches?.groups?.symbol !== (this.symbols.decimal ?? '.') &&
+      if (
+        decimalPartMatches?.groups?.digits &&
+        decimalPartMatches?.groups?.symbol !== (this.symbols.decimal ?? '.') &&
         (
           decimalPartMatches?.groups?.digits?.length < 3 ||
           decimalPartMatches?.groups?.digits?.length > 3 ||
@@ -312,7 +314,7 @@ class NumberParserImpl {
           (integerPart === '0' || integerPart === '\u0660' || integerPart === '\u3007')
         )
       ) {
-        decimalPart = decimalPart.replace(decimalPartMatches?.groups?.symbol, this.symbols.decimal ?? '.');
+        decimalPart = decimalPart?.replace(decimalPartMatches?.groups?.symbol, this.symbols.decimal ?? '.') ?? '';
       }
 
       integerPart.replace(LEADING_ZERO_REGEX, '');
