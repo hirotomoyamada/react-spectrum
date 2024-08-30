@@ -291,7 +291,7 @@ jobs:
             node --loader ./scripts/esm-support/loader.mjs ./scripts/esm-support/testESM.mjs
 
   lint:
-    executor: rsp
+    executor: rsp-xlarge
     steps:
       - restore_cache:
           key: react-spectrum-{{ .Environment.CACHE_VERSION }}-{{ .Environment.CIRCLE_SHA1 }}
@@ -697,6 +697,15 @@ workflows:
             branches:
               only:
                 - main
+    jobs:
+      - install
+      - publish-nightly
+
+  nightly-manual:
+    when:
+      and:
+        - equal: [ "nightly", << pipeline.parameters.GHA_Action >> ]
+        - equal: [ "workflow_dispatch", << pipeline.parameters.GHA_Event >>]
     jobs:
       - install
       - publish-nightly
