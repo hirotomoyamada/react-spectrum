@@ -55,7 +55,7 @@ interface SpectrumTextFieldBaseProps {
 export interface SpectrumTextFieldProps extends SpectrumTextFieldBaseProps, SpectrumTextInputBase, Omit<AriaTextFieldProps, 'isInvalid' | 'validationState'>, SpectrumFieldValidation<string>, SpectrumLabelableProps, StyleProps {}
 export interface SpectrumTextAreaProps extends SpectrumTextFieldBaseProps, SpectrumTextInputBase, Omit<AriaTextFieldProps<HTMLTextAreaElement>, 'isInvalid' | 'validationState' | 'type' | 'pattern'>, SpectrumFieldValidation<string>, SpectrumLabelableProps, StyleProps {}
 
-export interface TextFieldRef extends FocusableRefValue<HTMLInputElement | HTMLTextAreaElement, HTMLDivElement> {
+export interface TextFieldRef<T extends HTMLInputElement | HTMLTextAreaElement = HTMLInputElement> extends FocusableRefValue<T, HTMLDivElement> {
   select(): void,
-  getInputElement(): HTMLInputElement | HTMLTextAreaElement | null
+  getInputElement(): T | null
 }
