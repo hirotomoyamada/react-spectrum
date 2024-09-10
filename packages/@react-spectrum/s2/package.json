@@ -127,6 +127,7 @@
     "@react-aria/collections": "3.0.0-alpha.4",
     "@react-aria/i18n": "^3.12.2",
     "@react-aria/interactions": "^3.22.2",
+    "@react-aria/test-utils": "1.0.0-alpha.1",
     "@react-aria/utils": "^3.25.2",
     "@react-spectrum/utils": "^3.11.10",
     "@react-stately/virtualizer": "^4.0.1",
