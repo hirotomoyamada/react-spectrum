@@ -13,14 +13,15 @@
 import {Accordion, Disclosure, DisclosureHeader, DisclosurePanel, TextField} from '../src';
 import type {Meta, StoryObj} from '@storybook/react';
 import React from 'react';
-import {style} from '../style/spectrum-theme' with { type: 'macro' };
+import {style} from '../style' with { type: 'macro' };
 
 const meta: Meta<typeof Accordion> = {
   component: Accordion,
   parameters: {
     layout: 'centered'
   },
-  tags: ['autodocs']
+  tags: ['autodocs'],
+  title: 'Accordion'
 };
 
 export default meta;
