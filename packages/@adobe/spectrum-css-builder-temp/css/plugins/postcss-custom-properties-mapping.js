@@ -40,7 +40,7 @@ async function fetchVars() {
 }
 
 let fetchVarsPromise;
-module.exports = function() {
+module.exports = function () {
   return {
     postcssPlugin: 'postcss-custom-properties-mapping',
     OnceExit: async function (root, result) {
@@ -60,8 +60,7 @@ module.exports = function() {
                 // Otherwise, change the variable name to the mapped name.
                 if (staticVars[v]) {
                   nodes.splice(index, 1, ...valueParser(`var(${v}, ${staticVars[v]})`).nodes);
-                }
-                else if (allVars[v]) {
+                } else if (allVars[v]) {
                   nodes.splice(index, 1, ...valueParser(`var(${v}, ${allVars[v]})`).nodes);
                 }
               }
