@@ -8259,6 +8259,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@spectrum-css/component-builder@workspace:packages/@adobe/spectrum-css-builder-temp"
   dependencies:
+    "@swc/helpers": "npm:^0.5.0"
     gulp: "npm:^5.0.0"
     gulp-concat: "npm:^2.6.1"
     postcss: "npm:^5.2.18"
